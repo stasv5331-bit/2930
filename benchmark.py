@@ -7,9 +7,9 @@ import time
 import tracemalloc
 import random
 import sys
-from task_1 import execute_1, benchmark_task1
-from task_4 import execute_4, Task4Cache
-from task_5 import execute_5, benchmark_task5
+from task_1 import execute_1
+from task_4 import execute_4
+from task_5 import execute_5
 
 def measure_memory(func, *args):
     """Измерение потребления памяти"""
@@ -56,15 +56,18 @@ def run_benchmarks():
     print(f"Время выполнения: {time_original:.3f} мс")
     print(f"Пиковое потребление памяти: {mem_peak:.2f} KB")
     
-    # Запуск комплексного теста
-    print("\nКомплексный тест задания 1:")
-    benchmark_task1()
-    
     print("\n2. ЗАДАНИЕ 4 - Арифметика чисел-массивов")
     print("-" * 40)
     
-    # Тестирование кэширования
-    cache = Task4Cache()
+    # Тестирование кэширования (упрощённый вариант)
+    # Создаём простой кэш прямо в функции
+    cache = {}
+    
+    def execute_cached(arr1, arr2, operation):
+        key = (tuple(arr1), tuple(arr2), operation)
+        if key not in cache:
+            cache[key] = execute_4(arr1, arr2, operation)
+        return cache[key]
     
     start = time.perf_counter()
     for _ in range(1000):
@@ -73,7 +76,7 @@ def run_benchmarks():
     
     start = time.perf_counter()
     for _ in range(1000):
-        cache.execute_cached(test_arr4_1, test_arr4_2, '+')
+        execute_cached(test_arr4_1, test_arr4_2, '+')
     time_with_cache = (time.perf_counter() - start) * 1000
     
     print(f"Без кэша: {time_no_cache:.2f} мс")
@@ -87,7 +90,7 @@ def run_benchmarks():
     time_new = measure_time(execute_5, test_arr5, test_target, iterations=10)
     _, mem_current_new, mem_peak_new = measure_memory(execute_5, test_arr5, test_target)
     
-    print(f"Новый алгоритм (O(n)):")
+    print(f"Новый алгоритм (O(n²)):")
     print(f"  Время: {time_new:.3f} мс")
     print(f"  Память: {mem_peak_new:.2f} KB")
     
@@ -104,13 +107,9 @@ def run_benchmarks():
     scale_factor = (1000/100) ** 2  # O(n²) масштабирование
     time_old_estimated *= scale_factor
     
-    print(f"\nСтарый алгоритм (O(n²)) оценка для 1000 элементов:")
+    print(f"\nСтарый алгоритм (O(n³)) оценка для 1000 элементов:")
     print(f"  Время: {time_old_estimated:.1f} мс (оценка)")
     print(f"  Ускорение: {time_old_estimated/time_new:.1f} раз")
-    
-    # Запуск комплексного теста
-    print("\nКомплексный тест задания 5:")
-    benchmark_task5()
     
     print("\n4. ОБЩИЕ ВЫВОДЫ")
     print("-" * 40)

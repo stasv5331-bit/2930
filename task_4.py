@@ -30,3 +30,15 @@ def execute_4(arr1, arr2, operation):
     
     except Exception as e:
         raise Exception(f"Ошибка вычислений: {e}")
+
+
+class Task4Cache:
+    """Кэш для задания 4"""
+    def __init__(self):
+        self.cache = {}
+    
+    def execute_cached(self, arr1, arr2, operation):
+        key = (tuple(arr1), tuple(arr2), operation)
+        if key not in self.cache:
+            self.cache[key] = execute_4(arr1, arr2, operation)
+        return self.cache[key]

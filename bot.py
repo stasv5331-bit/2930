@@ -9,7 +9,7 @@ from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.fsm.storage.memory import MemoryStorage
 
 # ========== КОНФИГУРАЦИЯ ==========
-TOKEN = "8525462952:AAFx6PjQFg08wK5FpMsknLcbO0FebBhyTzc"
+TOKEN = "8508097815:AAGH_LuVgWdmNty4paGoEsWf0eEfKLgRzxQ"
 
 # Сначала создаем объекты
 bot = Bot(token=TOKEN)
